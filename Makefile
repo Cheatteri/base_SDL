@@ -11,7 +11,8 @@ GCC = gcc -Wall -Wextra -Werror
 DEPS = $(patsubst %,$(H_DIR)/%,$(HEAD))
 INC = -I $(H_DIR) -I $(SDL_INC_DIR)
 
-L_SDL = `SDL2-2.0.12/sdl2-config --cflags --libs`
+#L_SDL = `./SDL2-2.0.12/sdl2-config --cflags --libs`
+L_SDL = `$(SDL_DIR)/sdl2-config --cflags --libs`
 SDL_DIR = SDL2-2.0.12
 SDL_INC_DIR = SDL2-2.0.12/include
 SDL_TAR = SDL2-2.0.12.tar.gz
@@ -41,5 +42,6 @@ $(O_DIR): | $(SDL_DIR)
 
 $(SDL_DIR):
 	tar -xvf $(SDL_TAR)
-	cd $(SDL_DIR) && ./configure
-	cd $(SDL_DIR) && make
+	cd $(SDL_DIR) && ./configure --prefix=`pwd`/lib
+	make -C $(SDL_DIR)
+	make -C $(SDL_DIR) install
